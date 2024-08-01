@@ -36,7 +36,7 @@ huggingface-cli login
 #I gave it the following permissions: Repositories -> all, Inference -> all. Leave rest unchecked. Create token. Write down this token in password manager.
 huggingface-cli download meta-llama/Meta-Llama-3.1-8B-Instruct --local-dir Meta-Llama-3.1-8B-Instruct
 OR
-./download.sh # Follow instructions by pasting url, for your local PC you want to use 8B but this depends on hardware. 405B = datacenter full blown so do not try
+./download.sh # Follow instructions by pasting url, for your local PC you want to use 8B but this depends on hardware. 405B = datacenter full blown so do not try https://www.reddit.com/r/LocalLLaMA/comments/1e9nybe/if_you_have_to_ask_how_to_run_405b_locally/
 #You will have a .pth file and 2 smaller files if you have done everything correctly to this point
 #if you want to have a ChatGPT like experience, you will need a config.json. If this is not found, please re-do the download process but with huggingface-cli instead 
 
