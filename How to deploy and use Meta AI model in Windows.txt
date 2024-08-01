@@ -1,4 +1,4 @@
-#Recommended to do this 1 or 2 hours before you go to bed OR if you have something planned like going to the store. At some point you will have to wait an incredible long time. See +20 lines below. Heed my warning.
+#Recommended to do this 1 or 2 hours before you go to bed OR if you have something planned like going to the store. At some point you will have to wait an incredible long time. See +50 lines below. Heed my warning.
 
 #Take note:
 #The fundamental problem is that the official download.sh and huggingface are different distributions of llama models and this is not specified well enough in the documentation.
