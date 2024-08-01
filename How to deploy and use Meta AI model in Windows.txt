@@ -1,0 +1,88 @@
+#Recommended to do this 1 or 2 hours before you go to bed OR if you have something planned like going to the store. At some point you will have to wait an incredible long time. See +20 lines below. Heed my warning.
+
+#Take note:
+#The fundamental problem is that the official download.sh and huggingface are different distributions of llama models and this is not specified well enough in the documentation.
+#
+#If you want to use transformers on a locally downloaded model, it's best to download from the huggingface repo and ignore the download.sh method.
+#Since we are going to use the transformers library of Python, I highly recommend using the hugginface download method as the other method
+#does not include the files neccesary to make that change
+#this is badly documented by meta why there are 2 different files
+#know that both hugginface and the official meta page are both the official model. This can be found here: https://ai.meta.com/blog/meta-llama-3-1/
+# "...we’re making these models available to the community for download on llama.meta.com and Hugging Face and available for immediate development..."
+#Use the below command instead of ./download.sh in case you run into issues like for example a missing config.json file -> which I had
+#huggingface-cli download meta-llama/Meta-Llama-3.1-8B-Instruct --local-dir Meta-Llama-3.1-8B-Instruct
+#To be able to do the above command, you need an account and request specific access to the model you would like to download
+#The one I will download in this guide is https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct
+#Getting access took me about 15 minutes of awaiting to be reviewed. This might be quick because I already requested access through the following link before and used the same data:
+#https://llama.meta.com/llama-downloads/
+
+Install "Terminal" on windows
+Install WSL on windows
+Enable run unix WSL on windows feature
+Download specific model based on facebook/meta instructions
+Open terminal
+# Update to the latest repositories
+Sudo apt-get update
+# Make sure your terminal is up-to-date.
+Sudo apt-get upgrade
+# Navigate to folder on your windows machine. C drive is mounted under /mnt. Navigate to where you downloaded through facebook/meta instructions
+cd /mnt/c/Users/user/Downloads/llama-models-main/models/llama3_1
+sudo apt-get install python3
+#Install huggingface cli for python
+pip3 install -U "huggingface_hub[cli]"
+#Login to the huggingface cli with a token
+huggingface-cli login
+#fill in your pre-generated token on huggingface_hub using url https://huggingface.co/settings/tokens
+#I gave it the following permissions: Repositories -> all, Inference -> all. Leave rest unchecked. Create token. Write down this token in password manager.
+huggingface-cli download meta-llama/Meta-Llama-3.1-8B-Instruct --local-dir Meta-Llama-3.1-8B-Instruct
+OR
+./download.sh # Follow instructions by pasting url, for your local PC you want to use 8B but this depends on hardware. 405B = datacenter full blown so do not try
+#You will have a .pth file and 2 smaller files if you have done everything correctly to this point
+#if you want to have a ChatGPT like experience, you will need a config.json. If this is not found, please re-do the download process but with huggingface-cli instead 
+
+#https://github.com/ggerganov/llama.cpp/blob/master/docs/build.md
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+sudo apt-get install nvidia-cuda-toolkit
+#For NVIDIA GPU - Assumes you have CUDA already installed - https://developer.nvidia.com/cuda-gpus -> I installed this as well but you can try without first
+sudo apt-get install ccache
+sudo apt-get install cmake
+# DLLamaCublas is deprecated, use below command instead ; rm -rf build; cmake -S . -B build -DLLAMA_CUBLAS=ON && cmake --build build --config Release
+rm -rf build; cmake -S . -B build -DGGML_CUDA=ON && cmake --build build --config Release
+#The above command takes a while, this would be the best time to go to the store, go to bed, start cooking, hit the gym, go to work, visit family, play old school runescape and do "recipe for disaster" quest,...
+#For me it got stuck at 19 percent for a long time before continuing with line "Building CUDA object ggml/src/CMakeFiles/ggml.dir/ggml-cuda/template-instances/mmq-instance-iq3_s.cu.o"
+#After this it was down hill for performance. Takes an incredible long time. -timestamp 15 minutes into the command
+#Checking again 20 minutes in and it is now on 21 percent. Heed my warning 3 lines above this one and at the start. 
+#Checking again after 40 minutes the task is done.
+
+#Install pre-requisites for converting .pth to gguf
+#Install numpy
+pip3 install numpy
+#Set your local bin folder into path
+nano ~/.bashrc
+#At the end of the file add:
+# set PATH to pip
+PATH="$HOME/.local/bin:$PATH"
+# press control + X and hit save
+
+#install the torch pre-requisite
+python3 -m pip install torch torchvision
+
+#Install sentencepiece pre-requisite
+pip3 install sentencepiece
+
+#Install safetensors pre-requisite
+pip3 install safetensors
+
+#Install transformers pre-requisite
+pip3 install transformers
+
+#Convert your model to something useable:
+python3 convert_hf_to_gguf.py ./models/Meta-Llama-3.1-8B-Instruct/
+
+#If you did everyting right, you should have a message that says:
+#INFO:hf-to-gguf:Model successfully exported to models/Meta-Llama-3.1-8B-Instruct/Meta-Llama-3.1-8B-Instruct-F16.gguf
+
+#Now you have the model needed to run your interface, I recommend using koboldcpp, as per my own research on reddit for their nice UI.
+# https://github.com/LostRuins/koboldcpp
+#Once downloaded, run the koboldccp_cu12.exe, browse to your model and you are able to chat :)
