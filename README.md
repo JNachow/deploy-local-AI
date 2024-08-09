@@ -8,3 +8,5 @@ Meta-Llama-3.1-8B-Instruct
 
 I will most likely NOT maintain this, as this was a project for me to see what all the fuzz was about, but I hope my documentation helps someone else in it's efforts or at least someone is able to fork this
 and make it even more user friendly OR script it.
+
+In case this has helped you, you can always leave a like to the reddit post I made about it as well: https://www.reddit.com/r/LocalLLaMA/comments/1eh4f2p/stepbystep_guide_for_local_llama_31_windowsnvidia/
